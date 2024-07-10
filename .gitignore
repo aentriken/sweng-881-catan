@@ -31,3 +31,9 @@ local.properties
 
 # Backed up points in the project possibly useful for the presentation
 demos/*
+
+# Ignore Gradle project-specific cache directory
+.gradle
+
+# Ignore Gradle build output directory
+build
