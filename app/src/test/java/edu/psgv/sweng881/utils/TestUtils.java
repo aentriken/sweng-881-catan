@@ -3,6 +3,7 @@ package edu.psgv.sweng881.utils;
 import edu.psgv.sweng881.game.Player;
 import org.mockito.Mockito;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,17 +11,13 @@ public class TestUtils {
 
     public static ArrayList<Player> createGenericPlayerList() {
 
-        Player a = Mockito.mock(Player.class);
-        Mockito.when(a.getName()).thenReturn("a");
+        Player a = new Player("a", Color.blue);
 
-        Player b = Mockito.mock(Player.class);
-        Mockito.when(b.getName()).thenReturn("b");
+        Player b = new Player("b", Color.yellow);
 
-        Player c = Mockito.mock(Player.class);
-        Mockito.when(c.getName()).thenReturn("c");
+        Player c = new Player("c", Color.green);
 
-        Player d = Mockito.mock(Player.class);
-        Mockito.when(d.getName()).thenReturn("d");
+        Player d = new Player("d", Color.orange);
 
         return new ArrayList<>(List.of(a, b, c, d));
     }
