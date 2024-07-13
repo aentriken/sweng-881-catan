@@ -1,10 +1,7 @@
 package edu.psgv.sweng881.gui;
 
 
-import java.awt.Button;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
@@ -14,11 +11,13 @@ import edu.psgv.sweng881.game.Player;
 import edu.psgv.sweng881.lib.GraphPaperLayout;
 
 
-public class GameWindow {
+public class GameWindow extends JFrame {
 		
 	CatanBoard board;
 	BottomBar bottom;
 	SideBar side;
+
+	JFrame frame;
 	public final static int INTERVAL = 20;
 	
 	
@@ -31,21 +30,14 @@ public class GameWindow {
 		
 		createAndShowGUI();
 
-		Timer timer = new Timer(INTERVAL,
-				new ActionListener() {
-					public void actionPerformed(ActionEvent evt) {
-						// Refresh the board
-						board.repaint(); //TODO fix validate
-						bottom.repaint();
-					}
-				});
-
-		timer.start();
+		try {Thread.sleep(250);} catch (Exception ignored) {}
+		board.repaint(); //TODO fix validate
+		bottom.repaint();
 	}
 	
 	private void createAndShowGUI() {
 		
-		JFrame frame = new JFrame("Catan");
+		frame = new JFrame("Catan");
 		frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
 		Dimension d = new Dimension(5,6);
 

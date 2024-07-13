@@ -8,6 +8,8 @@
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     id 'application'
+    id 'java'
+    id 'idea'
 }
 
 repositories {
@@ -19,9 +21,22 @@ dependencies {
     // Use JUnit Jupiter for testing.
     testImplementation libs.junit.jupiter
 
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-
     testImplementation 'org.springframework.boot:spring-boot-starter-test:3.3.1'
+
+    testImplementation 'org.assertj:assertj-swing-junit:3.17.1'
+
+    testImplementation("org.junit.jupiter:junit-jupiter") {
+        because 'allows to write and run Jupiter tests'
+    }
+
+    testImplementation("junit:junit:4.13.2")
+    testRuntimeOnly("org.junit.vintage:junit-vintage-engine") {
+        because 'allows JUnit 3 and JUnit 4 tests to run'
+    }
+
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher") {
+        because 'allows tests to run from IDEs that bundle older version of launcher'
+    }
 
     // This dependency is used by the application.
     implementation libs.guava
@@ -39,7 +54,6 @@ application {
     mainClass = 'org.example.App'
 }
 
-tasks.named('test') {
-    // Use JUnit Platform for unit tests.
+test {
     useJUnitPlatform()
 }

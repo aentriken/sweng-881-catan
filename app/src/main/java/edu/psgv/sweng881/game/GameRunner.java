@@ -59,7 +59,7 @@ public class GameRunner {
 	}
 	
 	public static int getNumbPlayers() {
-		return numberPlayers;
+		return players.size();
 	}
 	
 	public static Player getPlayer(int i) {

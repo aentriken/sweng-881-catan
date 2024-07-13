@@ -3,7 +3,6 @@ package edu.psgv.sweng881.utils;
 import edu.psgv.sweng881.board.Board;
 import edu.psgv.sweng881.board.EdgeLocation;
 import edu.psgv.sweng881.board.Road;
-import edu.psgv.sweng881.board.Settlement;
 import edu.psgv.sweng881.board.Structure;
 import edu.psgv.sweng881.game.Player;
 import org.junit.jupiter.params.provider.Arguments;
