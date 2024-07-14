@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class TestUtils {
@@ -27,6 +29,25 @@ public class TestUtils {
         Player d = new Player("d", Color.orange);
 
         return new ArrayList<>(List.of(a, b, c, d));
+    }
+
+    public static Map<String, Player> createAdjacentLocationOwnerMap(Player placingPlayer, Map<String, Boolean> adjacentRoadsMatching, List<Player> nonPlacingPlayers) {
+        Random random = new Random();
+
+        // create Map of AdjacentLocation strings with the player that will own the AdjacentLocation
+        Map<String, Player> adjacentRoadOwnerMap = adjacentRoadsMatching.entrySet().stream().collect(Collectors.toMap(
+                Map.Entry::getKey,
+                e -> {
+                    if (e.getValue()) {
+                        return placingPlayer;
+                    }
+                    else {
+                        int index = random.nextInt(3);
+                        return nonPlacingPlayers.get(index);
+                    }
+                }
+        ));
+        return adjacentRoadOwnerMap;
     }
 
     public static class AdjacentLocation {

@@ -13,8 +13,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class PlaceRoadTest {
@@ -23,6 +21,10 @@ public class PlaceRoadTest {
 
     private static final Player placingPlayer = players.get(0);
 
+    /**
+     * Stream of Arguments that represent the various test cases for placeRoad()
+     * @return Stream of Arguments
+     */
     static Stream<Arguments> placeRoadTestCases() {
         return Stream.of(
 
@@ -76,6 +78,28 @@ public class PlaceRoadTest {
         );
     }
 
+    /**
+     * Method to transform raw test cases into more easily used data structures.
+     * @param x - x coordinate of edgeLocation
+     * @param y - y coordinate of edgeLocation
+     * @param o - orientation of edgeLocation
+     * @param player - player placing the road
+     * @param isOccupied - boolean for if the edgeLocation is already occupied
+     * @param tlMatches - boolean for if the edgeLocation to the top left of the given edgeLocation
+     *                  is owned by the player
+     * @param trMatches - boolean for if the edgeLocation to the top right of the given edgeLocation
+     *                  is owned by the player
+     * @param blMatches - boolean for if the edgeLocation to the bottom left of the given edgeLocation
+     *                  is owned by the player
+     * @param brMatches - boolean for if the edgeLocation to the bottom right of the given edgeLocation
+     *                  is owned by the player
+     * @param uMatches - boolean for if the vertexLocation above the given edgeLocation
+     *                  is owned by the player
+     * @param lMatches - boolean for if the vertexLocation below the given edgeLocation
+     *                  is owned by the player
+     * @param expected - expected result for the test case
+     * @return Arguments.of(EdgeLocation, Player, isOccupied, Map of AdjacentLocation String to Boolean, expectedResult)
+     */
     public static Arguments createTestCase(int x, int y, int o, int player, boolean isOccupied, boolean tlMatches, boolean trMatches,
                                            boolean blMatches, boolean brMatches, boolean uMatches, boolean lMatches, boolean expected) {
         // create EdgeLocation
@@ -94,6 +118,14 @@ public class PlaceRoadTest {
         return Arguments.of(edgeLocation, players.get(player - 1), isOccupied, adjacentStructuresMatching, expected);
     }
 
+    /**
+     * Method for running placeRoad() test cases.
+     * @param edgeLocation - location the road is being placed at
+     * @param placingPlayer - player placing the road
+     * @param isOccupied - whether the given edgeLocation is already occupied or not
+     * @param adjacentStructuresMatching - Map depicting which adjacent locations are owned by the placing player
+     * @param expected - expected result
+     */
     @ParameterizedTest(name = "TC{index} -> expecting {4}")
     @MethodSource("placeRoadTestCases")
     void shouldDoSomething(EdgeLocation edgeLocation, Player placingPlayer, boolean isOccupied,
@@ -109,7 +141,7 @@ public class PlaceRoadTest {
         nonPlacingPlayers.remove(placingPlayer);
 
         // initialize adjacent roads and structures
-        Map<String, Player> adjacentRoadOwnerMap = createAdjacentLocationOwnerMap(placingPlayer, adjacentStructuresMatching, nonPlacingPlayers);
+        Map<String, Player> adjacentRoadOwnerMap = TestUtils.createAdjacentLocationOwnerMap(placingPlayer, adjacentStructuresMatching, nonPlacingPlayers);
 
         // iterate Map entries and assign ownership
         adjacentRoadOwnerMap.forEach((key, value) -> TestUtils.setRoadAdjacentStructureOwner(board, edgeLocation, value, key));
@@ -121,22 +153,4 @@ public class PlaceRoadTest {
         Assertions.assertEquals(expected, board.placeRoad(edgeLocation, placingPlayer));
     }
 
-    private static Map<String, Player> createAdjacentLocationOwnerMap(Player placingPlayer, Map<String, Boolean> adjacentRoadsMatching, List<Player> nonPlacingPlayers) {
-        Random random = new Random();
-
-        // create Map of AdjacentLocation strings with the player that will own the AdjacentLocation
-        Map<String, Player> adjacentRoadOwnerMap = adjacentRoadsMatching.entrySet().stream().collect(Collectors.toMap(
-                Map.Entry::getKey,
-                e -> {
-                    if (e.getValue()) {
-                        return placingPlayer;
-                    }
-                    else {
-                        int index = random.nextInt(3);
-                        return nonPlacingPlayers.get(index);
-                    }
-                }
-        ));
-        return adjacentRoadOwnerMap;
-    }
 }
