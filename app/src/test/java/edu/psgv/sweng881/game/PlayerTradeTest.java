@@ -22,9 +22,17 @@ public class PlayerTradeTest {
 
     private static final ArrayList<Player> players = TestUtils.createGenericPlayerList();
 
+    /**
+     * Method for running test cases for playerTrade().
+     * @param playerAResources - resource set for playerA
+     * @param playerBResources - resource set for playerB
+     * @param fromA - resources to take from playerA
+     * @param fromB - resources to take from playerB
+     * @param expected - expected result
+     */
     @ParameterizedTest(name = "TC{index} -> expected: {5}")
     @MethodSource("playerTradeTestCases")
-    void shouldTestTrade(Map<String, Integer> playerAResources, Map<String, Integer> playerBResources,
+    void shouldTestPlayerTrade(Map<String, Integer> playerAResources, Map<String, Integer> playerBResources,
                          ArrayList<String> fromA, ArrayList<String> fromB, boolean expected) {
 
         Player playerA = players.get(0);
@@ -39,6 +47,10 @@ public class PlayerTradeTest {
         Assertions.assertTrue(game.playerTrade(playerA, playerB, fromA, fromB));
     }
 
+    /**
+     * Creates test cases to feed into shouldTestPlayerTrade
+     * @return Stream of Arguments
+     */
     static Stream<Arguments> playerTradeTestCases() {
         return Stream.of(
                 createPlayerTradeTestCaseArguments(2, 2, 1, 0, 1, 0, 2, 1, 2, 1, 0, 2, 0, 2, 1, 0, 1, 0, 2, 0, false),
