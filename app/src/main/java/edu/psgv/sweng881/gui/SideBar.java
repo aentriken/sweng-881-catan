@@ -273,43 +273,7 @@ public class SideBar extends JPanel {
 
 		JButton endTurn = new JButton(new AbstractAction() {
 			public void actionPerformed(ActionEvent a) {
-				Game g = display.getBoard().getGame();
-				
-				// Check for largest army
-				if (GameRunner.getCurrentPlayer().getNumbKnights() >= 3) {
-
-					int currMax = GameRunner.getCurrentPlayer().getNumbKnights();
-					Player largestArmy = GameRunner.getCurrentPlayer();
-					Player oldLargestArmy = null;
-					
-					for (int i = 0; i < GameRunner.getNumbPlayers(); i++) {
-						Player p = GameRunner.getPlayer(i);
-
-						if (p.hasLargestArmy()) {
-							oldLargestArmy = p;
-						}
-
-						if (p.getNumbKnights() > currMax) {
-							largestArmy = p;
-							currMax = p.getNumbKnights();
-						}
-					}
-					
-					if (oldLargestArmy != null && oldLargestArmy != largestArmy) {
-						oldLargestArmy.setHasLargestArmy(false);
-					}
-					
-					largestArmy.setHasLargestArmy(true);
-				}
-
-				if (g.over()) {
-					GameRunner.setWinner(g.winningPlayer());
-
-					winPanel();
-				}
-
-				GameRunner.nextPlayer();
-				rollPanel();
+				endTurn();
 			}
 		});
 		endTurn.setText("end your turn");
@@ -485,22 +449,7 @@ public class SideBar extends JPanel {
 		// Buy devcard
 		JButton buyCard = new JButton(new AbstractAction() {
 			public void actionPerformed(ActionEvent a) {
-				Game g = display.getBoard().getGame();
-
-				int bought = g.buyDevCard(GameRunner.getCurrentPlayer());
-
-				if (bought == 0) {
-					DevCard dC = g.getDeck().draw();
-					GameRunner.getCurrentPlayer().addDevCard(dC);
-
-					buyPanel();
-				}
-				else if (bought == 1) {
-					errorPanel("Insufficient resources!");
-				}
-				else if (bought == 2) {
-					errorPanel("No more dev cards in deck!");
-				}
+				buyCard();
 			}
 		});
 		buyCard.setText("dev card");
@@ -1036,6 +985,65 @@ public class SideBar extends JPanel {
 //			GameRunner.nextPlayer();
 //		devPanel();
 //		rollPanel();
+	}
+
+	public void buyCard() {
+		Game g = display.getBoard().getGame();
+
+		int bought = g.buyDevCard(GameRunner.getCurrentPlayer());
+
+		if (bought == 0) {
+			DevCard dC = g.getDeck().draw();
+			GameRunner.getCurrentPlayer().addDevCard(dC);
+
+			buyPanel();
+		}
+		else if (bought == 1) {
+			errorPanel("Insufficient resources!");
+		}
+		else if (bought == 2) {
+			errorPanel("No more dev cards in deck!");
+		}
+	}
+
+	public void endTurn() {
+		Game g = display.getBoard().getGame();
+
+		// Check for largest army
+		if (GameRunner.getCurrentPlayer().getNumbKnights() >= 3) {
+
+			int currMax = GameRunner.getCurrentPlayer().getNumbKnights();
+			Player largestArmy = GameRunner.getCurrentPlayer();
+			Player oldLargestArmy = null;
+
+			for (int i = 0; i < GameRunner.getNumbPlayers(); i++) {
+				Player p = GameRunner.getPlayer(i);
+
+				if (p.hasLargestArmy()) {
+					oldLargestArmy = p;
+				}
+
+				if (p.getNumbKnights() > currMax) {
+					largestArmy = p;
+					currMax = p.getNumbKnights();
+				}
+			}
+
+			if (oldLargestArmy != null && oldLargestArmy != largestArmy) {
+				oldLargestArmy.setHasLargestArmy(false);
+			}
+
+			largestArmy.setHasLargestArmy(true);
+		}
+
+		if (g.over()) {
+			GameRunner.setWinner(g.winningPlayer());
+
+			winPanel();
+		}
+
+		GameRunner.nextPlayer();
+		rollPanel();
 	}
 
 	private void setPanel(ComponentList cL) {

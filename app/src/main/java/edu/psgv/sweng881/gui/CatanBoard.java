@@ -118,6 +118,7 @@ public class CatanBoard extends JPanel{
 		MouseListener m = new AMouseListener();
 		addMouseListener(m);
 		//addMouseMotionListener((MouseMotionListener) m);
+		setName("CatanBoard");
 	}
 
 	public void paintComponent(Graphics g) {

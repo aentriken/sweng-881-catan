@@ -34,17 +34,30 @@ public class GraphTest extends AssertJSwingJUnitTestCase{
         ReflectionTestUtils.setField(GameRunner.class, "players", players);
         frame = GuiActionRunner.execute(() -> new GameWindow(players));
         window = new FrameFixture(robot(), frame);
+        window.show();
+        //window.maximize();
     }
 
 
+    /**
+     * click place
+     * click location for settlement
+     * click location for road
+     *
+     * click place
+     *
+     *
+     */
     @Test
-    public void shouldTestGraph() throws InterruptedException, AWTException {
-        // click the start button
-        JButtonFixture button = window.button("place");
-        button.click(MouseClickInfo.leftButton().times(1));
+    public void graphTestCase1() {
+        // click the place button
+        window.button("place").click();
 
-        // wait a second
-        try {Thread.sleep(1000);} catch (Exception ignored) {}
+        // place settlement
+        Point p = new Point(574, 182);
+        Component board = window.target();
+        robot().click(board, p);
+
         // assert state
         int state = (int) ReflectionTestUtils.getField(frame.getBoard(), "state");
 
