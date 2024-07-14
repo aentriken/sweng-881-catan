@@ -947,6 +947,7 @@ public class SideBar extends JPanel {
 				}
 			}
 		});
+		begin.setName("place");
 		begin.setText("place");
 		setupPanel.add(new KComponent(begin, new Rectangle(4,6,6,3)));
 
