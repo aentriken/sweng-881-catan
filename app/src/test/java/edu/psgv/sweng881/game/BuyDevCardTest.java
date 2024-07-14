@@ -15,7 +15,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import java.util.ArrayList;
 import java.util.stream.Stream;
 
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.lenient;
 
 @ExtendWith(MockitoExtension.class)
 class BuyDevCardTest {
@@ -61,7 +61,7 @@ class BuyDevCardTest {
         player.setNumberResourcesType("WOOL", wool);
         player.setNumberResourcesType("GRAIN", grain);
 
-        when(mockDeck.isEmpty()).thenReturn(deckEmpty);
+        lenient().when(mockDeck.isEmpty()).thenReturn(deckEmpty);
 
         int result = game.buyDevCard(player);
         Assertions.assertEquals(expectedResult, result);
