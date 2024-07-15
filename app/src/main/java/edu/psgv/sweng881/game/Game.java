@@ -48,6 +48,15 @@ public class Game {
 	}
 
 	/**
+	 * Replaces the current deck with an empty deck (for testing purposes)
+	 */
+	public void setEmptyDeck() {
+		while (!deck.isEmpty()) {
+			deck.draw();
+		}
+	}
+
+	/**
 	 * Checks if one player has ten or more victory points and more points than any other player
 	 * @return whether anyone has one yet
 	 */
