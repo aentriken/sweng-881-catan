@@ -1,6 +1,5 @@
 package edu.psgv.sweng881.game;
 
-import edu.psgv.sweng881.board.Deck;
 import edu.psgv.sweng881.utils.TestUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,15 +14,12 @@ import org.springframework.test.util.ReflectionTestUtils;
 import java.util.ArrayList;
 import java.util.stream.Stream;
 
-import static org.mockito.Mockito.lenient;
-
 @ExtendWith(MockitoExtension.class)
 class BuyDevCardTest {
 
     private static final ArrayList<Player> players = TestUtils.createGenericPlayerList();
 
     @Mock
-    private Deck mockDeck;
 
     private Game game;
 
@@ -41,7 +37,8 @@ class BuyDevCardTest {
         return Stream.of(
                 Arguments.of(-1, -1, -1, true, 1),  // Negative/Insufficient resources and empty deck
                 Arguments.of(0, 0, 0, false, 1),    // Insufficient resources
-                Arguments.of(2, 3, 2, false, 0)     // Sufficient resources
+                Arguments.of(2, 3, 2, false, 0),     // Sufficient resources
+                Arguments.of(2, 3, 2, true, 2)     // Sufficient resources but empty deck
         );
     }
 
@@ -61,7 +58,9 @@ class BuyDevCardTest {
         player.setNumberResourcesType("WOOL", wool);
         player.setNumberResourcesType("GRAIN", grain);
 
-        lenient().when(mockDeck.isEmpty()).thenReturn(deckEmpty);
+        if (deckEmpty) {
+            game.setEmptyDeck();  // Set the deck to be empty for this test case
+        }
 
         int result = game.buyDevCard(player);
         Assertions.assertEquals(expectedResult, result);
