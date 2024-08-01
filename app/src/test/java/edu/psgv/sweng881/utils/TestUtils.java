@@ -67,7 +67,7 @@ public class TestUtils {
         public static final String LUMBER = "LUMBER";
 
         public static List<String> getAllResources() {
-            return List.of(BRICK, WOOL, ORE, LUMBER, GRAIN);
+            return List.of(BRICK, WOOL, ORE, GRAIN, LUMBER);
         }
     }
 
