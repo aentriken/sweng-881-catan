@@ -6,6 +6,7 @@ import edu.psgv.sweng881.game.GameRunner;
 import edu.psgv.sweng881.game.Player;
 import edu.psgv.sweng881.utils.TestUtils;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -22,6 +23,7 @@ import java.util.stream.Stream;
 @ExtendWith(MockitoExtension.class)
 public class PlayerTest {
 
+    @Order(9)
     @ParameterizedTest(name = "TC{index} -> hasLargestArmy:{0}, willHaveLargestArmy:{1}, " +
             "expectedLargestArmy:{2}, expectedVPIncrease:{3}")
     @MethodSource("edu.psgv.sweng881.player.PlayerTestTCs#setHasLargestArmyTestCases")
@@ -44,6 +46,7 @@ public class PlayerTest {
         Assertions.assertEquals(expectedVPs, player.getVictoryPoints());
     }
 
+    @Order(8)
     @ParameterizedTest(name = "TC{index} -> startingHand:{0}, requestedCard:{1}, expectedHand: {2}")
     @MethodSource("edu.psgv.sweng881.player.PlayerTestTCs#removeCardTestCases")
     void shouldRemoveCard(List<Integer> cards, String card, List<Integer> expectedCards) {
@@ -66,9 +69,11 @@ public class PlayerTest {
         Assertions.assertEquals(expectedCards.get(3), player.getDevCardsType("Monopoly"));
         Assertions.assertEquals(expectedCards.get(4), player.getDevCardsType("Victory Point"));
     }
+
+    @Order(7)
     @ParameterizedTest(name = "TC{index} -> requestedCard:{1}, expected: {2}")
     @MethodSource("edu.psgv.sweng881.player.PlayerTestTCs#hasCardTestCases")
-    void shouldReturnHasCard(List<Integer> cards, String card, boolean expected) {
+    void testHasCard(List<Integer> cards, String card, boolean expected) {
 
         ArrayList<Player> players = TestUtils.createGenericPlayerList();
         Player player = players.get(0);
@@ -85,9 +90,10 @@ public class PlayerTest {
         Assertions.assertEquals(expected, result);
     }
 
+    @Order(1)
     @ParameterizedTest(name = "TC{index} -> resource:{0}, hand:{1}, expected: {2}")
     @MethodSource("edu.psgv.sweng881.player.PlayerTestTCs#numResourceOfTypeTestCases")
-    void shouldReturnNumResourcesForType(String resource, HashMap<String, Integer> hand, int expected) {
+    void shouldGetNumberResourcesForType(String resource, HashMap<String, Integer> hand, int expected) {
 
         ArrayList<Player> players = TestUtils.createGenericPlayerList();
         Player player = players.get(0);
@@ -102,6 +108,7 @@ public class PlayerTest {
     }
 
 
+    @Order(2)
     @ParameterizedTest(name = "TC{index} -> devCard:{0}, initialVPs:{1}, expectedVPs: {2}")
     @MethodSource("edu.psgv.sweng881.player.PlayerTestTCs#addDevCardTestCases")
     void shouldAddDevCard(String devCardType, int initialVPs, int expectedVictoryPoints) {
@@ -122,6 +129,7 @@ public class PlayerTest {
         Assertions.assertTrue(cards.contains(devCard));
     }
 
+    @Order(6)
     @ParameterizedTest(name = "TC{index} -> resource:{0}, expectedCards:{1}")
     @MethodSource("edu.psgv.sweng881.player.PlayerTestTCs#giveResourceTypeTestCases")
     void shouldGiveResourceType(String resource, int expectedCards) {
@@ -138,9 +146,10 @@ public class PlayerTest {
         Assertions.assertEquals(expectedCards, player.getNumberResourcesType(resource));
     }
 
+    @Order(4)
     @ParameterizedTest(name = "TC{index} -> resource:{0}, hand:{1}, expectedHand:{2}")
     @MethodSource("edu.psgv.sweng881.player.PlayerTestTCs#removeResourcesTestCases")
-    void shouldRemoveResourceType(ArrayList<String> cardsToRemove, HashMap<String, Integer> hand, HashMap<String, Integer> expectedHand) {
+    void shouldRemoveResources(ArrayList<String> cardsToRemove, HashMap<String, Integer> hand, HashMap<String, Integer> expectedHand) {
 
         ArrayList<Player> players = TestUtils.createGenericPlayerList();
         Player player = players.get(0);
@@ -157,9 +166,10 @@ public class PlayerTest {
         });
     }
 
+    @Order(5)
     @ParameterizedTest(name = "TC{index} -> resource:{0}, hand:{1}, expectedHand: {2}")
     @MethodSource("edu.psgv.sweng881.player.PlayerTestTCs#addResourcesTestCases")
-    void shouldAddResourceType(ArrayList<String> cardsToAdd, HashMap<String, Integer> hand, HashMap<String, Integer> expectedHand) {
+    void shouldAddResources(ArrayList<String> cardsToAdd, HashMap<String, Integer> hand, HashMap<String, Integer> expectedHand) {
 
         ArrayList<Player> players = TestUtils.createGenericPlayerList();
         Player player = players.get(0);
@@ -178,6 +188,7 @@ public class PlayerTest {
 
 
 
+    @Order(3)
     @ParameterizedTest(name = "TC{index} -> devCards:{0}, cardType:{1}, expectedResult:{2}")
     @MethodSource("edu.psgv.sweng881.player.PlayerTestTCs#getDevCardTypeTestCases")
     void shouldGetDevCardType(ArrayList<DevCard> devCards, String card, int expectedResult) {

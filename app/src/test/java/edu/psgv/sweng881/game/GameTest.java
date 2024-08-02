@@ -4,6 +4,7 @@ import edu.psgv.sweng881.board.Board;
 import edu.psgv.sweng881.board.EdgeLocation;
 import edu.psgv.sweng881.utils.TestUtils;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -30,6 +31,7 @@ public class GameTest {
      * @param deckEmpty - Whether the deck is empty
      * @param expectedResult - Expected result of the buyDevCard method
      */
+    @Order(9)
     @ParameterizedTest(name = "TC{index} -> ORE: {0}, WOOL: {1}, GRAIN: {2}, DeckEmpty: {3} - expecting {4}")
     @MethodSource("edu.psgv.sweng881.game.GameTestTCs#buyDevCardCombos")
     void shouldBuyDevCard(int ore, int wool, int grain, boolean deckEmpty, int expectedResult) {
@@ -50,9 +52,10 @@ public class GameTest {
         Assertions.assertEquals(expectedResult, result);
     }
 
+    @Order(1)
     @ParameterizedTest(name = "TC{index} -> playerIndex:{0}, VPs: {1} - expecting {2}")
     @MethodSource("edu.psgv.sweng881.game.GameTestTCs#victoryPointsTestData")
-    public void shouldTestOver(int playerIndex, int victoryPoints, boolean expectedGameOver) {
+    public void testOver(int playerIndex, int victoryPoints, boolean expectedGameOver) {
         ArrayList<Player> players = TestUtils.createGenericPlayerList();
 
         // Set the victory points for the specified player
@@ -77,9 +80,10 @@ public class GameTest {
      * @param fromB - resources to take from playerB
      * @param expected - expected result
      */
+    @Order(4)
     @ParameterizedTest(name = "TC{index} -> expected: {3}")
     @MethodSource("edu.psgv.sweng881.game.GameTestTCs#playerTradeTestCases")
-    void shouldTestPlayerTrade(Map<String, Integer> playerAResources, Map<String, Integer> playerBResources,
+    void testPlayerTrade(Map<String, Integer> playerAResources, Map<String, Integer> playerBResources,
                                ArrayList<String> fromA, ArrayList<String> fromB, boolean expected) {
 
         ArrayList<Player> players = TestUtils.createGenericPlayerList();
@@ -103,6 +107,7 @@ public class GameTest {
      * @param adjacentStructuresMatching - Map depicting which adjacent locations are owned by the placing player
      * @param expected - expected result
      */
+    @Order(10)
     @ParameterizedTest(name = "TC{index} -> expecting {4}")
     @MethodSource("edu.psgv.sweng881.game.GameTestTCs#placeRoadTestCases")
     void shouldPlaceRoad(EdgeLocation edgeLocation, int player, boolean isOccupied,
@@ -131,9 +136,11 @@ public class GameTest {
         // nothing adjacent to attach to
         Assertions.assertEquals(expected, board.placeRoad(edgeLocation, placingPlayer));
     }
+
+    @Order(5)
     @ParameterizedTest(name = "TC{index} -> ports:{0}, player:{1}, resource:{2}, resources:{3}, hand:{4}, expecting {5}")
     @MethodSource("edu.psgv.sweng881.game.GameTestTCs#npcTradeCombos")
-    void shouldPerformNPCTradesAsExpected(List<Boolean> ports, int player, String resource, ArrayList<String> resourcesGiven, HashMap<String, Integer> playerResources, int expectedResult) {
+    void testNPCTrades(List<Boolean> ports, int player, String resource, ArrayList<String> resourcesGiven, HashMap<String, Integer> playerResources, int expectedResult) {
         ArrayList<Player> players = TestUtils.createGenericPlayerList();
 
         Player playerA = players.get(player-1);
@@ -153,6 +160,7 @@ public class GameTest {
         Assertions.assertEquals(expectedResult, game.npcTrade(playerA, resource, resourcesGiven));
     }
 
+    @Order(6)
     @ParameterizedTest(name = "TC{index} -> brick: {0}, lumber: {1}, roads:{2}, expecting:{3}")
     @MethodSource("edu.psgv.sweng881.game.GameTestTCs#buyRoadTestCases")
     void shouldBuyRoad(int brick, int lumber, int roads, int expected, int expBrick, int expLumber, int expRoads) {
@@ -172,6 +180,7 @@ public class GameTest {
         Assertions.assertEquals(expRoads, player.getNumbRoads());
     }
 
+    @Order(7)
     @ParameterizedTest(name = "TC{index} -> brick: {0}, wool:{1}, lumber: {2}, grain:{3}, settlements:{4}, expecting:{5}")
     @MethodSource("edu.psgv.sweng881.game.GameTestTCs#buySettlementTestCases")
     void shouldBuySettlement(int brick, int wool, int lumber, int grain, int settlements,
@@ -196,6 +205,7 @@ public class GameTest {
         Assertions.assertEquals(expSettlements, player.getNumbSettlements());
     }
 
+    @Order(8)
     @ParameterizedTest(name = "TC{index} -> grain: {0}, ore: {1}, cities:{2}, expecting:{3}")
     @MethodSource("edu.psgv.sweng881.game.GameTestTCs#buyCityTestCases")
     void shouldBuyCity(int grain, int ore, int cities, int expected, int expGrain, int expOre, int expCities) {
@@ -215,6 +225,7 @@ public class GameTest {
         Assertions.assertEquals(expCities, player.getNumbCities());
     }
 
+    @Order(11)
     @ParameterizedTest(name = "TC{index} -> player1Cards: {0}, player2Cards:{1}, player3Cards,:{2}, " +
             "player4Cards:{3}")
     @MethodSource("edu.psgv.sweng881.game.GameTestTCs#halfCardsTestCases")
@@ -261,6 +272,7 @@ public class GameTest {
         });
     }
 
+    @Order(3)
     @ParameterizedTest(name = "TC{index} -> resource:{0}, player1:{1}, player2:{2}, player3:{3}, " +
             "player4:{4}, expectedTotalForPlayer{5}:{6}")
     @MethodSource("edu.psgv.sweng881.game.GameTestTCs#takeAllTestCases")
@@ -282,6 +294,7 @@ public class GameTest {
         Assertions.assertEquals(expectedTotal, playerTaking.getNumberResourcesType(resource));
     }
 
+    @Order(2)
     @ParameterizedTest(name = "TC{index} -> player1Brick:{0}, player1Wool:{1}, player1Ore:{2}, player1Grain:{3}, player1Lumber:{4}," +
             "player2Brick:{5}, player2Wool:{6}, player2Ore:{7}, player2Grain:{8}, player2Lumber:{9}")
     @MethodSource("edu.psgv.sweng881.game.GameTestTCs#takeCardTestCases")
