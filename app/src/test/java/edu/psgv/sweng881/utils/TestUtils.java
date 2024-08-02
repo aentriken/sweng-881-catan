@@ -1,6 +1,7 @@
 package edu.psgv.sweng881.utils;
 
 import edu.psgv.sweng881.board.Board;
+import edu.psgv.sweng881.board.DevCard;
 import edu.psgv.sweng881.board.EdgeLocation;
 import edu.psgv.sweng881.board.Road;
 import edu.psgv.sweng881.board.Structure;
@@ -48,6 +49,42 @@ public class TestUtils {
                 }
         ));
         return adjacentRoadOwnerMap;
+    }
+
+    public static HashMap<String, Integer> createPlayerHand(List<Integer> resources) {
+        HashMap<String, Integer> playerResources = new HashMap<>();
+        playerResources.put(Resource.BRICK, resources.get(0));
+        playerResources.put(Resource.WOOL, resources.get(1));
+        playerResources.put(Resource.ORE, resources.get(2));
+        playerResources.put(Resource.GRAIN, resources.get(3));
+        playerResources.put(Resource.LUMBER, resources.get(4));
+        return playerResources;
+    }
+
+    public static ArrayList<String> createCardsGiven(List<Integer> resources) {
+        ArrayList<String> cardsGiven = new ArrayList<>();
+        IntStream.range(0, resources.size()).forEach(index -> {
+            //get num cards
+            int num = resources.get(index);
+
+            //get resource
+            String resource = Resource.getAllResources().get(index);
+
+            //add resources
+            IntStream.range(0, num).forEach(val -> {
+                cardsGiven.add(resource);
+            });
+        });
+        return cardsGiven;
+    }
+
+    public static int setPlayerCards(List<Integer> cards, Player player) {
+        player.setNumberResourcesType(Resource.BRICK, cards.get(0));
+        player.setNumberResourcesType(Resource.WOOL, cards.get(1));
+        player.setNumberResourcesType(Resource.ORE, cards.get(2));
+        player.setNumberResourcesType(Resource.GRAIN, cards.get(3));
+        player.setNumberResourcesType(Resource.LUMBER, cards.get(4));
+        return cards.stream().collect((Collectors.summingInt(Integer::intValue)));
     }
 
     public static class AdjacentLocation {
@@ -173,6 +210,66 @@ public class TestUtils {
         addResourceToList(fromB, TestUtils.Resource.GRAIN, fromBGrain);
 
         return Arguments.of(playerAResources, playerBResources, fromA, fromB, expected);
+    }
+
+    /**
+     * Method to transform raw test cases into more easily used data structures.
+     * @param x - x coordinate of edgeLocation
+     * @param y - y coordinate of edgeLocation
+     * @param o - orientation of edgeLocation
+     * @param player - player placing the road
+     * @param isOccupied - boolean for if the edgeLocation is already occupied
+     * @param tlMatches - boolean for if the edgeLocation to the top left of the given edgeLocation
+     *                  is owned by the player
+     * @param trMatches - boolean for if the edgeLocation to the top right of the given edgeLocation
+     *                  is owned by the player
+     * @param blMatches - boolean for if the edgeLocation to the bottom left of the given edgeLocation
+     *                  is owned by the player
+     * @param brMatches - boolean for if the edgeLocation to the bottom right of the given edgeLocation
+     *                  is owned by the player
+     * @param uMatches - boolean for if the vertexLocation above the given edgeLocation
+     *                  is owned by the player
+     * @param lMatches - boolean for if the vertexLocation below the given edgeLocation
+     *                  is owned by the player
+     * @param expected - expected result for the test case
+     * @return Arguments.of(EdgeLocation, Player, isOccupied, Map of AdjacentLocation String to Boolean, expectedResult)
+     */
+    public static Arguments createTestCase(int x, int y, int o, int player, boolean isOccupied, boolean tlMatches, boolean trMatches,
+                                           boolean blMatches, boolean brMatches, boolean uMatches, boolean lMatches, boolean expected) {
+        // create EdgeLocation
+        EdgeLocation edgeLocation = new EdgeLocation(x, y, o);
+
+        // create Map of AdjacentLocations and whether their owner matches the player or not
+        Map<String, Boolean> adjacentStructuresMatching = new HashMap<>();
+        adjacentStructuresMatching.put(TestUtils.AdjacentLocation.TOP_LEFT, tlMatches);
+        adjacentStructuresMatching.put(TestUtils.AdjacentLocation.TOP_RIGHT, trMatches);
+        adjacentStructuresMatching.put(TestUtils.AdjacentLocation.BOTTOM_LEFT, blMatches);
+        adjacentStructuresMatching.put(TestUtils.AdjacentLocation.BOTTOM_RIGHT, brMatches);
+        adjacentStructuresMatching.put(TestUtils.AdjacentLocation.UPPER, uMatches);
+        adjacentStructuresMatching.put(TestUtils.AdjacentLocation.LOWER, lMatches);
+
+        // package it all up into an argument
+        return Arguments.of(edgeLocation, player, isOccupied, adjacentStructuresMatching, expected);
+    }
+
+    public static ArrayList<DevCard> createDevCardHand(List<Integer> cards) {
+        ArrayList<DevCard> devCards = new ArrayList<>();
+        IntStream.range(0, cards.get(0)).forEach(val -> {
+            devCards.add(new DevCard("Knight"));
+        });
+        IntStream.range(0, cards.get(1)).forEach(val -> {
+            devCards.add(new DevCard("Progress", "Road building"));
+        });
+        IntStream.range(0, cards.get(2)).forEach(val -> {
+            devCards.add(new DevCard("Progress", "Year of plenty"));
+        });
+        IntStream.range(0, cards.get(3)).forEach(val -> {
+            devCards.add(new DevCard("Progress", "Monopoly"));
+        });
+        IntStream.range(0, cards.get(4)).forEach(val -> {
+            devCards.add(new DevCard("Victory Point"));
+        });
+        return devCards;
     }
 
 }

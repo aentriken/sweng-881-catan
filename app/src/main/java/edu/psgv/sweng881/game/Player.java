@@ -401,7 +401,7 @@ public class Player {
 		getNumberResourcesType("LUMBER");
 	}
 	
-	/**
+	/**a
 	 * Returns number of dev cards of given type or subtype
 	 * @param str the card type or subtype
 	 * @return the number owned by this Player
