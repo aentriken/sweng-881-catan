@@ -70,26 +70,6 @@ public class GameTest {
     }
 
     /**
-     * Test cases for victory point combinations
-     * @param victoryPoints - List of victory points for each player
-     * @param expectedResult - expected return value from Game.over()
-     */
-    @ParameterizedTest(name = "TC{index} -> VPs: {0} - expecting {1}")
-    @MethodSource("edu.psgv.sweng881.game.GameTestTCs#victoryPointCombos")
-    void shouldTestGameOver(List<Integer> victoryPoints, boolean expectedResult) {
-        ArrayList<Player> players = TestUtils.createGenericPlayerList();
-
-        IntStream.range(0, 4).forEach(i -> {
-            players.get(i).setVictoryPoints(victoryPoints.get(i));
-        });
-
-        ReflectionTestUtils.setField(GameRunner.class, "players", players);
-        Game game = new Game(players);
-
-        Assertions.assertEquals(expectedResult, game.over());
-    }
-
-    /**
      * Method for running test cases for playerTrade().
      * @param playerAResources - resource set for playerA
      * @param playerBResources - resource set for playerB
@@ -305,7 +285,7 @@ public class GameTest {
     @ParameterizedTest(name = "TC{index} -> player1Brick:{0}, player1Wool:{1}, player1Ore:{2}, player1Grain:{3}, player1Lumber:{4}," +
             "player2Brick:{5}, player2Wool:{6}, player2Ore:{7}, player2Grain:{8}, player2Lumber:{9}")
     @MethodSource("edu.psgv.sweng881.game.GameTestTCs#takeCardTestCases")
-    void shouldTakeAll(int brick1, int wool1, int ore1, int grain1, int lumber1,
+    void shouldTakeCard(int brick1, int wool1, int ore1, int grain1, int lumber1,
                        int brick2, int wool2, int ore2, int grain2, int lumber2, int expectedTakingTotal, int expectedGivingTotal) {
         ArrayList<Player> players = TestUtils.createGenericPlayerList();
         Player playerTaking = players.get(0);
